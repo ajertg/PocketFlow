@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "canisters": {
+    "pocketflow_core": {
+      "type": "motoko",
+      "main": "src/lib.mo"
+    },
+    "hello_world_example": {
+      "type": "motoko",
+      "main": "examples/hello-world/main.mo",
+      "dependencies": ["pocketflow_core"]
+    },
+    "llm_mock_service": {
+      "type": "motoko", 
+      "main": "examples/hello-world/llm_mock.mo"
+    }
+  },
+  "defaults": {
+    "build": {
+      "packtool": ""
+    }
+  },
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral",
+      "replica": {
+        "subnet_type": "system"
+      }
+    },
+    "pocket-ic": {
+      "type": "persistent", 
+      "bind": "127.0.0.1:8080"
+    }
+  },
+  "replica": {
+    "subnet_type": "system"
+  }
+}

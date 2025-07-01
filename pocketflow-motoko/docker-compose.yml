@@ -1,0 +1,61 @@
+version: '3.8'
+services:
+  dfx:
+    build: 
+      context: .
+      dockerfile: Dockerfile
+      # Enable Docker BuildKit for better caching
+      cache_from:
+        - pocketflow-dfx:latest
+    image: pocketflow-dfx:latest
+    container_name: pocketflow-motoko-dev
+    working_dir: /workspace
+    volumes:
+      # Only mount source code that changes frequently
+      - ./src:/workspace/src
+      - ./examples:/workspace/examples
+      - ./scripts:/workspace/scripts
+      - ./dfx.json:/workspace/dfx.json
+      # Cache important directories between runs
+      - dfx_cache:/root/.cache/dfinity
+      - dfx_local:/root/.local/share/dfx
+      - dfx_config:/root/.config/dfx
+      # Cache workspace .dfx directory (contains deployed canisters)
+      - workspace_dfx:/workspace/.dfx
+    ports:
+      - "8000:8000"    # IC replica
+      - "8080:8080"    # Candid UI
+      - "4943:4943"    # DFX dashboard
+    environment:
+      - DFX_NETWORK=local
+      - DFX_PORT=8000
+      - DEBIAN_FRONTEND=noninteractive
+      - DFX_CACHE_ROOT=/root/.cache/dfinity
+    command: >
+      bash -c "
+        # Set up environment
+        source /root/.local/share/dfx/env 2>/dev/null || true
+        export PATH='/root/.local/share/dfx/bin:$PATH'
+        
+        # Keep container running for development
+        tail -f /dev/null
+      "
+    stdin_open: true
+    tty: true
+    # Restart policy for development convenience
+    restart: unless-stopped
+
+volumes:
+  # Persistent caches - these will survive container restarts
+  dfx_cache:
+    driver: local
+    name: pocketflow_dfx_cache
+  dfx_local:
+    driver: local  
+    name: pocketflow_dfx_local
+  dfx_config:
+    driver: local
+    name: pocketflow_dfx_config
+  workspace_dfx:
+    driver: local
+    name: pocketflow_workspace_dfx

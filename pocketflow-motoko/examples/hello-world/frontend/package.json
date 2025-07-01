@@ -1,0 +1,19 @@
+{
+  "name": "pocketflow-hello-world-frontend",
+  "version": "1.0.0",
+  "description": "Simple frontend for PocketFlow Hello World example",
+  "main": "main.js",
+  "type": "module",
+  "scripts": {
+    "start": "python -m http.server 8080",
+    "dev": "python -m http.server 8080"
+  },
+  "dependencies": {
+    "@dfinity/agent": "^1.0.1",
+    "@dfinity/candid": "^1.0.1"
+  },
+  "devDependencies": {},
+  "keywords": ["pocketflow", "internet-computer", "motoko"],
+  "author": "PocketFlow Team",
+  "license": "MIT"
+}

@@ -1,0 +1,66 @@
+# Docker ignore file for PocketFlow Motoko
+# Optimizes build context and improves caching
+
+# Git and version control
+.git
+.gitignore
+*.git
+
+# Documentation (not needed in container)
+README.md
+README_DEPLOYMENT.md
+TROUBLESHOOTING.md
+ARCHITECTURE_PLAN.md
+PROJECT_STRUCTURE.md
+docs/
+
+# Cache and temporary files
+.dfx/local/
+.dfx/ic/
+node_modules/
+target/
+.vessel/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS files
+.DS_Store
+Thumbs.db
+*.tmp
+
+# Build artifacts
+*.wasm
+*.did
+*.d.ts
+
+# Logs
+*.log
+logs/
+
+# Local environment files
+.env
+.env.local
+
+# Frontend build files (we copy source)
+examples/hello-world/frontend/dist/
+examples/hello-world/frontend/build/
+
+# Docker files (avoid recursive copying)
+Dockerfile
+docker-compose.yml
+.dockerignore
+
+# Scripts that run on host (not in container)
+scripts/*.bat
+scripts/*.ps1
+
+# Keep these files for container use:
+# src/
+# examples/
+# dfx.json
+# scripts/*.sh (Linux scripts for container)
