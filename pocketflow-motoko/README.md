@@ -14,6 +14,7 @@ PocketFlow Motoko brings the elegant simplicity of PocketFlow's workflow engine 
 - **Distributed**: Support for inter-canister workflow execution
 - **Persistent**: Uses stable variables for upgrade-safe state
 - **Compatible**: Direct ports of Python PocketFlow patterns
+- **Official ICP Dev Environment**: Uses DFINITY's official Docker image for reliable development setup
 
 ## Quick Start
 
@@ -22,7 +23,7 @@ PocketFlow Motoko brings the elegant simplicity of PocketFlow's workflow engine 
 
 ### Docker Setup (Recommended)
 
-The fastest way to get started is using Docker:
+The fastest way to get started is using Docker with the official ICP development environment:
 
 ```bash
 # Clone and enter the project

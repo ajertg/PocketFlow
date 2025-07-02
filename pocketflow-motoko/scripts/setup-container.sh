@@ -1,52 +1,28 @@
 #!/bin/bash
 
-# Setup script to install DFX in Ubuntu container
+# Setup script for PocketFlow in official ICP dev environment
 set -e
 
-echo "🚀 Setting up DFINITY development environment..."
+echo "🚀 Setting up PocketFlow environment..."
 
-# Update package list
-apt-get update -y
+# Source the dfx environment (already available in official ICP dev environment)
+source /root/.local/share/dfx/env 2>/dev/null || true
 
-# Install required packages
-apt-get install -y \
-    curl \
-    build-essential \
-    pkg-config \
-    libssl-dev \
-    libunwind-dev \
-    ca-certificates \
-    wget \
-    git
-
-echo "📦 Installing DFX..."
-
-# Install DFX
-sh -ci "$(curl -fsSL https://internetcomputer.org/install.sh)"
-
-# Source the dfx environment
-source "$HOME/.local/share/dfx/env"
-
-# Add DFX to PATH (new location)
+# Add DFX to PATH
 export PATH="/root/.local/share/dfx/bin:$PATH"
-echo 'export PATH="/root/.local/share/dfx/bin:$PATH"' >> /root/.bashrc
 
-# Verify installation
-echo "✅ DFX installed successfully:"
+# Verify DFX is available
+echo "✅ DFX version:"
 dfx --version
 
-# Install Vessel (package manager)
-echo "📦 Installing Vessel..."
-wget https://github.com/dfinity/vessel/releases/latest/download/vessel-linux64 -O /usr/local/bin/vessel
-chmod +x /usr/local/bin/vessel
-
-echo "✅ Vessel installed successfully:"
+# Verify Vessel is available (installed in Dockerfile)
+echo "✅ Vessel version:"
 vessel --version
 
 # Make scripts executable
 chmod +x /workspace/scripts/*.sh
 
-echo "🎉 Setup complete! Ready for PocketFlow development."
+echo "🎉 PocketFlow environment ready!"
 echo ""
 echo "Next steps:"
 echo "  1. Run: /workspace/scripts/quick-test.sh"

@@ -1,4 +1,3 @@
-version: '3.8'
 services:
   dfx:
     build: 
@@ -37,8 +36,8 @@ services:
         source /root/.local/share/dfx/env 2>/dev/null || true
         export PATH='/root/.local/share/dfx/bin:$PATH'
         
-        # Keep container running for development
-        tail -f /dev/null
+        # Keep container running for development - using bash read with timeout
+        while true; do read -t 30 || true; done
       "
     stdin_open: true
     tty: true

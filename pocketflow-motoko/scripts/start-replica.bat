@@ -29,7 +29,7 @@ echo [INFO] Starting IC replica (this may take a moment)...
 docker-compose exec dfx bash -c "source ~/.local/share/dfx/env 2>/dev/null; export PATH=/root/.local/share/dfx/bin:$PATH && dfx start --clean --background"
 
 echo [INFO] Waiting for IC replica to be ready...
-docker-compose exec dfx bash -c "sleep 15"
+timeout /t 15 /nobreak >nul
 
 echo [INFO] Verifying replica status...
 set /a attempts=0
@@ -44,7 +44,7 @@ echo [INFO] Checking replica... attempt %attempts%/12
 docker-compose exec dfx bash -c "source ~/.local/share/dfx/env 2>/dev/null; export PATH=/root/.local/share/dfx/bin:$PATH && dfx ping local" >nul 2>&1
 if %errorlevel% neq 0 (
     echo [INFO] Replica still starting... waiting a bit more...
-    docker-compose exec dfx bash -c "sleep 5"
+    timeout /t 5 /nobreak >nul
     goto :check_replica
 )
 
