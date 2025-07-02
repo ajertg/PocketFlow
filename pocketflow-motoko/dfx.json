@@ -1,6 +1,20 @@
 {
   "version": 1,
   "canisters": {
+    "simple_test": {
+      "type": "motoko",
+      "main": "simple_test.mo"
+    },
+    "test_simple": {
+      "type": "motoko",
+      "main": "tests/test_simple.mo",
+      "dependencies": ["pocketflow_core"]
+    },
+    "test_flow_basic": {
+      "type": "motoko", 
+      "main": "tests/test_flow_basic.mo",
+      "dependencies": ["pocketflow_core"]
+    },
     "pocketflow_core": {
       "type": "motoko",
       "main": "src/lib.mo"
@@ -22,7 +36,7 @@
   },
   "networks": {
     "local": {
-      "bind": "127.0.0.1:8000",
+      "bind": "0.0.0.0:8000",
       "type": "ephemeral",
       "replica": {
         "subnet_type": "system"
@@ -30,7 +44,7 @@
     },
     "pocket-ic": {
       "type": "persistent", 
-      "bind": "127.0.0.1:8080"
+      "bind": "0.0.0.0:8080"
     }
   },
   "replica": {

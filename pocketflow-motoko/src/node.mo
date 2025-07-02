@@ -4,13 +4,13 @@ import Debug "mo:base/Debug";
 
 module {
     // Base Node class implementing core retry logic
-    public class BaseNode(maxRetries: Nat, waitTime: Nat) : Types.NodeInterface {
-        public let maxRetries = maxRetries;
-        public let waitTime = waitTime;
+    public class BaseNode(maxRetriesParam: Nat, waitTimeParam: Nat) : Types.NodeInterface {
+        public let maxRetries = maxRetriesParam;
+        public let waitTime = waitTimeParam;
         private var currentRetry = 0;
         
         // Default prep - override in subclasses
-        public func prep(sharedStore: Types.SharedStore) : async Types.StoreValue {
+        public func prep(_sharedStore: Types.SharedStore) : async Types.StoreValue {
             #text("")
         };
         
@@ -20,7 +20,7 @@ module {
         };
         
         // Default post - override in subclasses
-        public func post(sharedStore: Types.SharedStore, prepRes: Types.StoreValue, execRes: Types.StoreValue) : async ?Types.ActionName {
+        public func post(_sharedStore: Types.SharedStore, _prepRes: Types.StoreValue, _execRes: Types.StoreValue) : async ?Types.ActionName {
             null
         };
         
@@ -31,7 +31,7 @@ module {
                 switch (await exec(prepRes)) {
                     case (#success(result)) { return #success(result) };
                     case (#error(msg)) {
-                        if (currentRetry == maxRetries - 1) {
+                        if (currentRetry >= maxRetries) {
                             return await execFallback(prepRes, msg)
                         } else {
                             currentRetry += 1;
@@ -56,7 +56,7 @@ module {
         };
         
         // Fallback for when max retries exceeded - override in subclasses
-        public func execFallback(prepRes: Types.StoreValue, error: Text) : async Types.NodeResult<Types.StoreValue> {
+        public func execFallback(_prepRes: Types.StoreValue, error: Text) : async Types.NodeResult<Types.StoreValue> {
             #error(error)
         };
         
@@ -79,18 +79,13 @@ module {
         };
     };
     
-    // Simple Node implementation
-    public type Node = BaseNode;
-    
     // Batch Node for processing arrays of items
-    public class BatchNode(maxRetries: Nat, waitTime: Nat) : Types.NodeInterface {
-        private let baseNode = BaseNode(maxRetries, waitTime);
+    public class BatchNode(maxRetriesParam: Nat, waitTimeParam: Nat) : Types.NodeInterface {
+        public let maxRetries = maxRetriesParam;
+        public let waitTime = waitTimeParam;
         
-        public let maxRetries = maxRetries;
-        public let waitTime = waitTime;
-        
-        public func prep(sharedStore: Types.SharedStore) : async Types.StoreValue {
-            await baseNode.prep(sharedStore)
+        public func prep(_sharedStore: Types.SharedStore) : async Types.StoreValue {
+            #text("")
         };
         
         // Override this in subclasses to process individual items
@@ -100,11 +95,11 @@ module {
         
         public func exec(prepRes: Types.StoreValue) : async Types.NodeResult<Types.StoreValue> {
             // For now, just delegate to base - in full implementation would handle arrays
-            await baseNode.exec(prepRes)
+            #success(prepRes)
         };
         
-        public func post(sharedStore: Types.SharedStore, prepRes: Types.StoreValue, execRes: Types.StoreValue) : async ?Types.ActionName {
-            await baseNode.post(sharedStore, prepRes, execRes)
+        public func post(_sharedStore: Types.SharedStore, _prepRes: Types.StoreValue, _execRes: Types.StoreValue) : async ?Types.ActionName {
+            null
         };
     };
 }

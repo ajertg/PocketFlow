@@ -1,0 +1,9 @@
+{
+  "version": 1,
+  "canisters": {
+    "test_extension": {
+      "type": "invalid_type",
+      "main": "nonexistent/file.mo"
+    }
+  }
+}

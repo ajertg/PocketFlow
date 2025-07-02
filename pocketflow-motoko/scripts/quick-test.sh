@@ -69,7 +69,7 @@ print_status "Starting IC replica..."
 
 # Start DFX (background mode)
 if $IN_DOCKER; then
-    dfx start --background --host 0.0.0.0 --port 8000
+    dfx start --background --host 0.0.0.0:8000
 else
     dfx start --background
 fi
